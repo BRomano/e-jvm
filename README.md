@@ -1,4 +1,4 @@
 e-jvm
 =====
 
-A embedded java virtual machine.
+An embedded java virtual machine.
