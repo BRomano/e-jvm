@@ -41,60 +41,8 @@
  *   Today any instruction are validantig their parameters.
  */
 
-#include "stdafx.h"
-#include "JavaClass.h"
-#include "types.h"
-#include "constants.h"
-#include "JavaVM.h"
-#include "JavaClassParser.h"
 
-#include <string>
-#include <boost/shared_ptr.hpp>
 
-class DummyAllocator;
-
-void Execute(std::string className)
-{
-	jClass clazz;
-	jClass object_class;
-	
-	DummyAllocator d;
-	JavaVM * jvm = new JavaVM(&d);
-	try
-	{
-		clazz = jvm->loadClass(className);
-		object_class = jvm->loadClass(className);
-	}
-	catch(...)
-	{
-		assert(false);
-	}
-	
-	jClass virtual_class(clazz);
-//	Object * obj = jvm->getObjectHeap()->createObject(virtual_class);
-//	jvm->invokeMethod(obj, "main", "()I");
-	
-
-	u2 m_index = clazz->getMethodID("main", "([Ljava/lang/String;)V", virtual_class); //initialize class
-	Code_attribute * code = virtual_class->getMethodCodeAttribute(m_index);
-	Frame * frame = new Frame();
-	frame->setCode(code);
-	frame->_clazz = virtual_class;
-	frame->_method = virtual_class->_methods[m_index];
-
-	jvm->addNewThread(frame);
-	jvm->execThreads();
-	delete frame;
-}
-
-int main(int argc, char * argv[])
-{
-	if (argc < 2)
-		return -1;
-
-	Execute(argv[1]);
-	return 0;
-}
 
 /**
  *

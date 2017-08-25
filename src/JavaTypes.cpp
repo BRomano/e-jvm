@@ -1,7 +1,3 @@
-#pragma once
-
-#include "stdafx.h"
-
 #include "JavaTypes.h"
 #include "JavaClass.h"
 #include "JavaClassParser.h"

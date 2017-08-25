@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+
 #include "ObjectHeap.h"
 #include "types.h"
 #include "ClassHeap.h"
@@ -31,15 +31,3 @@ void DummyAllocator::deallocatePrimitiveArr(u4 id, Object * obj, u4 count)
 	delete obj;
 }
 
-template <typename Allocator>
-Variable * HeapObject<Allocator>::getObject(Object object)
-{
-	ASSERT(false);
-	std::map<int, Variable *>::iterator it;
-	//it = _objectMap.find(object._heapID);
-
-	//if (it == _objectMap.end())
-	//	throw std::exception("object doesn't exist");
-
-	return NULL;//it->second;
-}

@@ -3,13 +3,12 @@
 #include "types.h"
 #include "constants.h"
 #include "JavaTypes.h"
-#include "classHeap.h"
-#include "ObjectHeap.h"
+#include "ClassHeap.h"
 
 #include <vector>
 #include <boost/enable_shared_from_this.hpp>
 
-class HeapClass;
+class Heap;
 
 /**
  *
@@ -27,7 +26,10 @@ class JavaClass : public ClassFile, public boost::enable_shared_from_this<JavaCl
 
 		bool isInheritFrom(const std::string & catch_type_name);
 		
-		u2 getMethodID(const std::string & methodName, const std::string & methodDesc, jClass & clazz);
+		//u2 getMethodID(const std::string & methodName, const std::string & methodDesc, boost::shared_ptr<JavaClass> & clazz);
+        /*find method index, if can't find method index then try to find in his father*/
+        u2 getMethodID(const std::string & methodName, const std::string & methodDesc, boost::shared_ptr<JavaClass> & clazz);
+
 		Code_attribute * getMethodCodeAttribute(u2 m_index);
 		u2 getFieldIndex(u2 strName, u2 strDesc);
 		u1 getFieldType(u2 strDesc);

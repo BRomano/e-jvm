@@ -53,7 +53,7 @@ class JavaVM
 			delete _classHeap;
 		}
 
-		jClass loadClass(const std::string & className) { return getClassHeap()->loadClass(className); }
+		boost::shared_ptr<JavaClass> loadClass(const std::string & className) { return getClassHeap()->loadClass(className); }
 		HeapClass * getClassHeap() { return _classHeap; }
 		Heap * getObjectHeap() { return _objectHeap; }
 		StackFrame * popThread();
@@ -68,7 +68,7 @@ class JavaVM
 		void execThreads();
 		bool execThread(StackFrame * currentThread, int timeEscalonator);
 		void addNewThread(Frame * frame);
-		boost::shared_ptr<StackFrame> JavaVM::createStack();
+		boost::shared_ptr<StackFrame> createStack();
 
 		bool checkFrame(Frame * f);
 

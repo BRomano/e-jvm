@@ -4,8 +4,8 @@ typedef unsigned int u4;
 typedef unsigned short u2;
 typedef unsigned char u1;
 
-typedef __int64 i8;
-typedef unsigned __int64 u8;
+typedef long long i8;
+typedef unsigned long long u8;
 
 typedef int i4;
 typedef short i2;

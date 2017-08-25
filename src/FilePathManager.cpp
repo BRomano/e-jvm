@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "FilePathManager.h"
 //#include "shlwapi.h"
 //#pragma comment(lib, "shlwapi.lib")

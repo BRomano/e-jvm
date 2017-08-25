@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 #include "opcodes.h"
 #include "types.h"
 #include "JavaClass.h"

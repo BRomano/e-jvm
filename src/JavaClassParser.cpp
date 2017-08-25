@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "shlwapi.h"
 
 #include "JavaClassParser.h"
@@ -26,7 +25,7 @@ bool JavaClassParser::loadClassFromFile(const boost::filesystem::path & path) th
 
 	FILE * file = fopen(path.string().c_str(), "rb");
 	if (file == NULL)
-		throw std::exception("FUCK FILE");
+		throw std::runtime_error("FUCK FILE");
 //	fseek(file, 0, SEEK_END);
 //   _byteCodeLength = ftell(file);
 //	if (_byteCodeLength <= 0)

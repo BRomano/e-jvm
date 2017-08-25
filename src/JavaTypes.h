@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-
+#include <cstring>
 #include <vector>
 #include <map>
 #include <stack>
@@ -10,8 +10,8 @@
 #include <boost/weak_ptr.hpp>
 
 class JavaClassParser;
-class JavaClass;
-typedef boost::shared_ptr<JavaClass> jClass;
+//class JavaClass;
+//typedef boost::shared_ptr<JavaClass> jClass;
 
 /**
  * I change these values. All these structs are declared different on Oracle JVM specification.
@@ -40,7 +40,7 @@ struct CONSTANT_Utf8_info : public CPBase
 		bc++;
 		this->length = getu2(bc);
 		bytes = new u1[this->length];
-		memcpy(this->bytes, bc, this->length);
+		std::memcpy(this->bytes, bc, this->length);
 	}
 
 	virtual ~CONSTANT_Utf8_info()
@@ -258,7 +258,7 @@ struct u2_resolved
 class JavaClass;
 /*
  * The Java virtual machine does not mandate any particular internal structure for objects.
- * In some of Oracle’s implementations of the Java virtual machine,
+ * In some of Oracleï¿½s implementations of the Java virtual machine,
  * a reference to a class instance is a pointer to a handle that is itself a pair of pointers: 
  * one to a table containing the methods of the object and a pointer to the Class object that represents 
  * the type of the object, and the other to the memory allocated from the heap for the object data. 
@@ -353,7 +353,7 @@ struct Object
 };
 
 /**
- * Attributes are used in the ClassFile (§4.1), field_info (§4.5), method_info (§4.6) and Code_attribute (§4.7.3) structures of the class file format. 
+ * Attributes are used in the ClassFile (ï¿½4.1), field_info (ï¿½4.5), method_info (ï¿½4.6) and Code_attribute (ï¿½4.7.3) structures of the class file format. 
  * All attributes have the following general format: 
  *
  * http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.21
@@ -368,26 +368,26 @@ struct attribute_info
 //    u1 * info;//[attribute_length]; //TODO link enum for point propertie
 	 /**
 	  * May be something like below
-			ConstantValue (§4.7.2) 	1.0.2 	45.3
-			Code (§4.7.3) 	1.0.2 	45.3
-			StackMapTable (§4.7.4) 	6 	50.0
-			Exceptions (§4.7.5) 	1.0.2 	45.3
-			InnerClasses (§4.7.6) 	1.1 	45.3
-			EnclosingMethod (§4.7.7) 	5.0 	49.0
-			Synthetic (§4.7.8) 	1.1 	45.3
-			Signature (§4.7.9) 	5.0 	49.0
-			SourceFile (§4.7.10) 	1.0.2 	45.3
-			SourceDebugExtension (§4.7.11) 	5.0 	49.0
-			LineNumberTable (§4.7.12) 	1.0.2 	45.3
-			LocalVariableTable (§4.7.13) 	1.0.2 	45.3
-			LocalVariableTypeTable (§4.7.14) 	5.0 	49.0
-			Deprecated (§4.7.15) 	1.1 	45.3
-			RuntimeVisibleAnnotations (§4.7.16) 	5.0 	49.0
-			RuntimeInvisibleAnnotations (§4.7.17) 	5.0 	49.0
-			RuntimeVisibleParameterAnnotations (§4.7.18) 	5.0 	49.0
-			RuntimeInvisibleParameterAnnotations (§4.7.19) 	5.0 	49.0
-			AnnotationDefault (§4.7.20) 	5.0 	49.0
-			BootstrapMethods (§4.7.21) 	7 	51.0
+			ConstantValue (ï¿½4.7.2) 	1.0.2 	45.3
+			Code (ï¿½4.7.3) 	1.0.2 	45.3
+			StackMapTable (ï¿½4.7.4) 	6 	50.0
+			Exceptions (ï¿½4.7.5) 	1.0.2 	45.3
+			InnerClasses (ï¿½4.7.6) 	1.1 	45.3
+			EnclosingMethod (ï¿½4.7.7) 	5.0 	49.0
+			Synthetic (ï¿½4.7.8) 	1.1 	45.3
+			Signature (ï¿½4.7.9) 	5.0 	49.0
+			SourceFile (ï¿½4.7.10) 	1.0.2 	45.3
+			SourceDebugExtension (ï¿½4.7.11) 	5.0 	49.0
+			LineNumberTable (ï¿½4.7.12) 	1.0.2 	45.3
+			LocalVariableTable (ï¿½4.7.13) 	1.0.2 	45.3
+			LocalVariableTypeTable (ï¿½4.7.14) 	5.0 	49.0
+			Deprecated (ï¿½4.7.15) 	1.1 	45.3
+			RuntimeVisibleAnnotations (ï¿½4.7.16) 	5.0 	49.0
+			RuntimeInvisibleAnnotations (ï¿½4.7.17) 	5.0 	49.0
+			RuntimeVisibleParameterAnnotations (ï¿½4.7.18) 	5.0 	49.0
+			RuntimeInvisibleParameterAnnotations (ï¿½4.7.19) 	5.0 	49.0
+			AnnotationDefault (ï¿½4.7.20) 	5.0 	49.0
+			BootstrapMethods (ï¿½4.7.21) 	7 	51.0
 	  */
 
 	 virtual void parse(JavaClassParser * parser, boost::shared_ptr<JavaClass> clazz, u1 * info) = 0;
@@ -444,7 +444,7 @@ class Exceptions_attribute : public attribute_info
 
 	/**
 	 * Each value in the exception_index_table array must be a valid index into the constant_pool table.
-	 * The constant_pool entry referenced by each table item must be a CONSTANT_Class_info structure (§4.4.1) representing a class type that this method is declared to throw.
+	 * The constant_pool entry referenced by each table item must be a CONSTANT_Class_info structure (ï¿½4.4.1) representing a class type that this method is declared to throw.
 	 */
 	std::vector<u2> _exception_index_table;//[number_of_exceptions];
 	virtual void parse(JavaClassParser * parser, boost::shared_ptr<JavaClass> clazz, u1 * info);
@@ -561,7 +561,7 @@ class Frame
 		int _operandStackSize;
 
 		/*reference to the runtime constant pool*/
-		jClass _clazz; // here I have my constPool, maybe put here a pointer for this constpool
+		boost::shared_ptr<JavaClass> _clazz; // here I have my constPool, maybe put here a pointer for this constpool
 		method_and_field_info * _method;
 		Code_attribute * _code; // optimize
 		bool _hasException; // if this frame needs to process an exception

@@ -1,6 +1,4 @@
-#pragma once
 
-#include "StdAfx.h"
 #include "JavaClass.h"
 #include "shlwapi.h"
 #include "ClassHeap.h"
@@ -43,7 +41,7 @@ std::string JavaClass::getSuperClassName(void)
 {
 	std::string super_class_name;
 	if (super_class < 1)
-		throw std::exception("There is no class");
+		throw std::runtime_error("There is no class");
 
 	return this->getClassName(super_class);
 }
@@ -64,47 +62,6 @@ Code_attribute * JavaClass::getMethodCodeAttribute(u2 m_index)
 			return reinterpret_cast<Code_attribute *>(this->_methods[m_index]->_attributes[i]);
 	}
 	throw jException("No such method");
-}
-
-/*find method index, if can't find method index then try to find in his father*/
-u2 JavaClass::getMethodID(const std::string & methodName, const std::string & methodDesc, jClass & clazz)
-{
-	if (_methods.size() == 0)
-		throw std::exception("There are no methods");
-
-	int i = 0;
-	clazz = this->shared_from_this();
-	
-	while (true)
-	{
-		for (i = 0; i < (u2)clazz->_methods.size(); i++)
-		{
-			std::string name, desc;
-			clazz->getStringFromConstPool(clazz->_methods[i]->name_index, name);
-			if (name != methodName)
-				continue;
-
-			clazz->getStringFromConstPool(clazz->_methods[i]->descriptor_index, desc);
-			if (desc == methodDesc)
-				break;
-		}
-
-		try
-		{
-			if (i < (u2)clazz->_methods.size())
-				break;
-			else
-				clazz = clazz->getSuperClass(); //needs find method in father
-		}
-		catch(std::exception & ex) // can't find class
-		{
-			ASSERT(false); //TODO throw nosuchclassexception, throw jException
-			i = -1;
-			break;
-		}
-	}
-
-	return i;
 }
 
 u2 JavaClass::getFieldIndex(u2 u2Name, u2 u2Desc)
@@ -130,6 +87,46 @@ u2 JavaClass::getFieldIndex(u2 u2Name, u2 u2Desc)
 
 	//TODO
 	return 0; //nosuchfield
+}
+
+u2 JavaClass::getMethodID(const std::string & methodName, const std::string & methodDesc, boost::shared_ptr<JavaClass> & clazz)
+{
+    if (_methods.size() == 0)
+        throw std::runtime_error("There are no methods");
+
+    int i = 0;
+    clazz = this->shared_from_this();
+
+    while (true)
+    {
+        for (i = 0; i < (u2)clazz->_methods.size(); i++)
+        {
+            std::string name, desc;
+            clazz->getStringFromConstPool(clazz->_methods[i]->name_index, name);
+            if (name != methodName)
+                continue;
+
+            clazz->getStringFromConstPool(clazz->_methods[i]->descriptor_index, desc);
+            if (desc == methodDesc)
+                break;
+        }
+
+        try
+        {
+            if (i < (u2)clazz->_methods.size())
+                break;
+            else
+                clazz = clazz->getSuperClass(); //needs find method in father
+        }
+        catch(std::exception & ex) // can't find class
+        {
+            ASSERT(false); //TODO throw nosuchclassexception, throw jException
+            i = -1;
+            break;
+        }
+    }
+
+    return i;
 }
 
 /**

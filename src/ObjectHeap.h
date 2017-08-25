@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JavaTypes.h"
 #include "ClassHeap.h"
+#include "JavaClass.h"
 
 #include <boost/shared_ptr.hpp>
 
@@ -74,37 +75,48 @@ class HeapObject : public Heap
 				delete it->second;
 		}
 
-		Variable * getObject(Object object);
+        Variable * getObject(Object object)
+        {
+            ASSERT(false);
+            std::map<int, Variable *>::iterator it;
+            //it = _objectMap.find(object._heapID);
+
+            //if (it == _objectMap.end())
+            //	throw std::exception("object doesn't exist");
+
+            return NULL;//it->second;
+        }
+
 		virtual Object * createObject(boost::shared_ptr<JavaClass> clazz)
-		{
-			u4 fields = clazz->getFieldCount();
-			Object * object = NULL;
-			u4 id = _alloc->allocateObj(clazz->getThisClassName(), object, fields);
+        {
+            u4 fields = clazz->getFieldCount();
+            Object * object = NULL;
+            u4 id = _alloc->allocateObj(clazz->getThisClassName(), object, fields);
 
-			if (id == 0)
-				assert(false); // throw outofmemoryexception
+            if (id == 0)
+                assert(false); // throw outofmemoryexception
 
-			object->_class = clazz;
-			object->_countFields = fields;
+            object->_class = clazz;
+            object->_countFields = fields;
 
-			boost::shared_ptr<JavaClass> virtualClass(clazz);
-			int index = 0;
-			while (index < object->_countFields)
-			{
-				for (int i = 0; i < virtualClass->_fields.size() /*fields_count*/ ; i++)
-				{
-					object->_objFields[i + index]._field_index = /*clazz or virtualClass ??*/ virtualClass->getFieldIndex(virtualClass->_fields[i]->name_index, virtualClass->_fields[i]->descriptor_index);
-					object->_objFields[i + index]._value._type = virtualClass->getFieldType(virtualClass->_fields[i]->descriptor_index);
-				}
-				//initialize objects from my father
-				index += virtualClass->_fields.size();// fields_count;
-				if (index < object->_countFields)
-					virtualClass = virtualClass->getSuperClass();
-			}
+            boost::shared_ptr<JavaClass> virtualClass(clazz);
+            int index = 0;
+            while (index < object->_countFields)
+            {
+                for (int i = 0; i < virtualClass->_fields.size() /*fields_count*/ ; i++)
+                {
+                    object->_objFields[i + index]._field_index = /*clazz or virtualClass ??*/ virtualClass->getFieldIndex(virtualClass->_fields[i]->name_index, virtualClass->_fields[i]->descriptor_index);
+                    object->_objFields[i + index]._value._type = virtualClass->getFieldType(virtualClass->_fields[i]->descriptor_index);
+                }
+                //initialize objects from my father
+                index += virtualClass->_fields.size();// fields_count;
+                if (index < object->_countFields)
+                    virtualClass = virtualClass->getSuperClass();
+            }
 
-			_objectMap.insert(std::make_pair(id, object));
-			return object;
-		}
+            _objectMap.insert(std::make_pair(id, object));
+            return object;
+        }
 
 		virtual Object * createStringObject(HeapClass * classHeap)
 		{

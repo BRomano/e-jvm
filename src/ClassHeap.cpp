@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 
 #include "ClassHeap.h"
 #include "JavaClass.h"
@@ -31,7 +30,7 @@ boost::shared_ptr<JavaClass> HeapClass::addClass(boost::shared_ptr<JavaClass> ja
 	return pair.first->second;
 }
 
-jClass HeapClass::getClass(const std::string & className)
+boost::shared_ptr<JavaClass> HeapClass::getClass(const std::string & className)
 {
 	classMap::iterator it = _classMap.find(className);
 	if (it != _classMap.end())
@@ -58,7 +57,7 @@ boost::shared_ptr<JavaClass> HeapClass::loadClass(const std::string & className)
 	//if (p.empty())
 	//	throw std::exception("path not found");
 
-	jClass clazz(new JavaClass());
+	boost::shared_ptr<JavaClass> clazz(new JavaClass());
 	JavaClassParser parser;
 	parser.parseClass(p, clazz);
 

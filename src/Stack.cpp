@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "Stack.h"
 #include "JavaClass.h"
 
