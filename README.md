@@ -1,17 +1,24 @@
 e-jvm
 =====
 
+```
+Projeto criado com a finalidade de aprendizado, e o melhor conhecimento de uma VM.
+Projeto segue documentação oficial, implementando corretamente de acordo com documentação os bytecodes, 
+e a estrutura de classes que um compilador Java.
+
+Projeto criado em 2012, migrado de http://code.google.com/p/e-jvm/, infelizmente na migração foi perdido todo o histórico do SVN.
+Não pretendo dar continuidade ao projeto, em 2017 fiz um último update de adaptar o projeto ao CMake.
+```
+
 An embedded java virtual machine.
 
- * The best link I use to understand and create this JVM version.
- * This link is a specification for JVM, this is the most important link, all I've needed is there.
- * But I need more to understand then google is the best friend.
+ * The best link I use to understand and create this JVM version. This link is a specification for JVM, this is the most important link, all I've needed is there, but I need more to understand then google is the best friend.
  * http://docs.oracle.com/javase/specs/jvms/se7/html/index.html
  *
  * It's good to understand how jvm process method, thread.
  * http://www.cubrid.org/blog/dev-platform/understanding-jvm-internals/
 
- * This is the process to load and initialize a class in JVM. I need create these 5 steps to improve the JVM.
+ * This is the process to load and initialize a class in JVM. I need to create these 5 steps to improve the JVM.
  *
  * Loading: A class is obtained from a file and loaded to the JVM memory.
  --> This process is too sample, only create a class to find file in path (CLASSPATH) and read all file into memory.
